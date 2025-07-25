@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Réserver votre terrain{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
+{% endblock %}
+
+{% block body %}
+<header>
+  <h1>
+    <img src="{{ asset('images/logo.png') }}" alt="LOCASPORT" width="150" />
+  </h1>
+
+  <p>Réservez Votre Terrain en Ligne</p>
+
+  <form id="searchForm">
+    <input type="text" name="sport" placeholder="Sport (ex: Tennis, Padel...)" />
+    <input type="text" name="ville" placeholder="Ville ou code postal" />
+    <input type="date" name="date" />
+    <button type="submit">Rechercher</button>
+  </form>
+</header>
+
+<section class="sports-list">
+  <h2>Choisissez un sport</h2>
+  <div class="sports">
+    <button>Padel</button>
+    <button>Soccer</button>
+    <button>Tennis</button>
+  </div>
+</section>
+
+<section class="centres-proches">
+  <h2>Centres proches de chez vous</h2>
+  <div class="centres">
+    <div class="centre">
+      <p>Centre Sportif A</p>
+      <button onclick="window.open('https://www.google.com/maps?q=Centre+Sportif+A+Paris')">Voir la carte</button>
+    </div>
+    <div class="centre">
+      <p>Centre Sportif B</p>
+      <button onclick="window.open('https://www.google.com/maps?q=Centre+Sportif+B+Lyon')">Voir la carte</button>
+    </div>
+  </div>
+</section>
+
+<section id="results"></section>
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <h3>Réservation Sport</h3>
+      <p>Réservez vos terrains facilement partout en France.</p>
+    </div>
+
+    <div class="footer-links">
+      
+      <ul>
+      <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+      <li><a href="{{ path('app_login') }}">Connexion</a></li>
+      <li><a href="{{ path('app_register') }}">Inscription</a></li>
+      {# <li><a href="{{ path('app_centres') }}">Centres sportifs</a></li> #}
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Contact</h4>
+      <p>Email : contact@reservationsport.fr</p>
+      <p>Téléphone : +33 1 23 45 67 89</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Réservation Sport – Tous droits réservés</p>
+  </div>
+</footer>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/accueil.js') }}"></script>
+{% endblock %}
