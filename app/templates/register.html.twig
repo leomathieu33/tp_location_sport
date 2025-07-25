@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/inscription.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+        <h1>Créer un compte</h1>
+
+    
+
+        <form method="POST" action="{{ path('app_register') }}">
+            <div>
+                <label for="nom">Nom complet</label>
+                <input type="text" name="nom" id="nom" required>
+            </div>
+            <div>
+                <label for="email">Adresse email</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div>
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <div>
+                <label for="confirm_password">Confirmer le mot de passe</label>
+                <input type="password" name="confirm_password" id="confirm_password" required>
+            </div>
+            <button type="submit">S'inscrire</button>
+        </form>
+    </div>
+
+    <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <h3>Réservation Sport</h3>
+      <p>Réservez vos terrains facilement partout en France.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Liens utiles</h4>
+      <ul>
+      <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+      <li><a href="{{ path('app_login') }}">Connexion</a></li>
+      <li><a href="{{ path('app_register') }}">Inscription</a></li>
+      {# <li><a href="{{ path('app_centres') }}">Centres sportifs</a></li> #}
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Contact</h4>
+      <p>Email : contact@reservationsport.fr</p>
+      <p>Téléphone : +33 1 23 45 67 89</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Réservation Sport – Tous droits réservés</p>
+  </div>
+</footer>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/inscription.js') }}"></script>
+{% endblock %}

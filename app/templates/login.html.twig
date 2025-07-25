@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+{% endblock %}
+
+
+{% block body %}
+  <div class="form-container">
+    <h1>Connexion</h1>
+
+    {% if error %}
+      <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" action="{{ path('app_login') }}">
+      <div>
+        <label for="email">Email :</label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      <div>
+        <label for="password">Mot de passe :</label>
+        <input type="password" name="password" id="password" required>
+      </div>
+      <button type="submit">Se connecter</button>
+    </form>
+  </div>
+  
+
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-logo">
+      <h3>Réservation Sport</h3>
+      <p>Réservez vos terrains facilement partout en France.</p>
+    </div>
+
+    <div class="footer-links">
+      <h4>Liens utiles</h4>
+      <ul>
+      <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+      <li><a href="{{ path('app_login') }}">Connexion</a></li>
+      <li><a href="{{ path('app_register') }}">Inscription</a></li>
+      {# <li><a href="{{ path('app_centres') }}">Centres sportifs</a></li> #}
+      </ul>
+    </div>
+
+    <div class="footer-contact">
+      <h4>Contact</h4>
+      <p>Email : contact@reservationsport.fr</p>
+      <p>Téléphone : +33 1 23 45 67 89</p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 Réservation Sport – Tous droits réservés</p>
+  </div>
+</footer>
+
+{% endblock %}
