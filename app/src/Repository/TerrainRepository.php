@@ -6,9 +6,6 @@ use App\Entity\Terrain;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Terrain>
- */
 class TerrainRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,28 +13,26 @@ class TerrainRepository extends ServiceEntityRepository
         parent::__construct($registry, Terrain::class);
     }
 
-    //    /**
-    //     * @return Terrain[] Returns an array of Terrain objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Terrain
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Recherche des terrains disponibles selon la ville, le sport et la date.
+     *
+     * @param string $ville
+     * @param string $sport
+     * @param \DateTimeInterface $date
+     * @return Terrain[]
+     */
+public function searchTerrains(string $ville, string $sport, \DateTimeInterface $date): array
+{
+    return $this->createQueryBuilder('t')
+    ->join('t.sport', 's')
+    ->leftJoin('t.reservations', 'r', 'WITH', 'r.date_reservation_debut <= :date AND r.date_reservation_fin >= :date')
+    ->andWhere('t.ville = :ville')
+    ->andWhere('s.nomSport = :sport')
+    ->andWhere('r.id IS NULL')
+    ->setParameter('ville', $ville)
+    ->setParameter('sport', $sport)
+    ->setParameter('date', $date)
+    ->getQuery()
+    ->getResult(); 
+}
 }

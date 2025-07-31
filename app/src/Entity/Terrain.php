@@ -24,10 +24,16 @@ class Terrain
     #[ORM\Column(length: 255)]
     private ?string $reference_Terrain = null;
 
+   
+
+    #[ORM\ManyToOne(inversedBy: 'terrains')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Sport $sport = null;
+
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'Terrain')]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'terrain')]
     private Collection $reservations;
 
     public function __construct()
@@ -48,7 +54,6 @@ class Terrain
     public function setVille(string $ville): static
     {
         $this->ville = $ville;
-
         return $this;
     }
 
@@ -60,7 +65,6 @@ class Terrain
     public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
-
         return $this;
     }
 
@@ -72,7 +76,19 @@ class Terrain
     public function setReferenceTerrain(string $reference_Terrain): static
     {
         $this->reference_Terrain = $reference_Terrain;
+        return $this;
+    }
 
+  
+
+    public function getSport(): ?Sport
+    {
+        return $this->sport;
+    }
+
+    public function setSport(?Sport $sport): static
+    {
+        $this->sport = $sport;
         return $this;
     }
 
@@ -97,7 +113,6 @@ class Terrain
     public function removeReservation(Reservation $reservation): static
     {
         if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
             if ($reservation->getTerrain() === $this) {
                 $reservation->setTerrain(null);
             }

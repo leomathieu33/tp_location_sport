@@ -19,7 +19,7 @@
     <input type="text" name="sport" placeholder="Sport (ex: Tennis, Padel...)" />
     <input type="text" name="ville" placeholder="Ville ou code postal" />
     <input type="date" name="date" />
-    <button type="submit">Rechercher</button>
+    <button type="submit">Rechercher</button> 
   </form>
 </header>
 
@@ -33,20 +33,9 @@
 </section>
 
 <section class="centres-proches">
-  <h2>Centres proches de chez vous</h2>
-  <div class="centres">
-    <div class="centre">
-      <p>Centre Sportif A</p>
-      <button onclick="window.open('https://www.google.com/maps?q=Centre+Sportif+A+Paris')">Voir la carte</button>
-    </div>
-    <div class="centre">
-      <p>Centre Sportif B</p>
-      <button onclick="window.open('https://www.google.com/maps?q=Centre+Sportif+B+Lyon')">Voir la carte</button>
-    </div>
-  </div>
+  <h2>	Terrains disponibles</h2>
+  <div id="results"></div> 
 </section>
-
-<section id="results"></section>
 
 <footer class="footer">
   <div class="footer-container">
@@ -56,12 +45,10 @@
     </div>
 
     <div class="footer-links">
-      
       <ul>
-      <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
-      <li><a href="{{ path('app_login') }}">Connexion</a></li>
-      <li><a href="{{ path('app_register') }}">Inscription</a></li>
-      {# <li><a href="{{ path('app_centres') }}">Centres sportifs</a></li> #}
+        <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
+        <li><a href="{{ path('app_login') }}">Connexion</a></li>
+        <li><a href="{{ path('app_register') }}">Inscription</a></li>
       </ul>
     </div>
 

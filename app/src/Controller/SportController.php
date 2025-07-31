@@ -71,7 +71,7 @@ final class SportController extends AbstractController
     #[Route('/{id}', name: 'app_sport_delete', methods: ['POST'])]
     public function delete(Request $request, Sport $sport, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$sport->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$sport->getId(), $request->request->get('_token'))) {
             $entityManager->remove($sport);
             $entityManager->flush();
         }
