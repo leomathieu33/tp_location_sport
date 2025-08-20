@@ -13,17 +13,17 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?\DateTime $date_reservation_debut = null;
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $date_reservation_debut = null;
 
-    #[ORM\Column]
-    private ?\DateTime $date_reservation_fin = null;
+    #[ORM\Column(type: "datetime")]
+    private ?\DateTimeInterface $date_reservation_fin = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(targetEntity: Terrain::class, inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Terrain $terrain = null;
 
@@ -32,51 +32,47 @@ class Reservation
         return $this->id;
     }
 
-    public function getDateReservationDebut(): ?\DateTime
+    public function getDateReservationDebut(): ?\DateTimeInterface
     {
         return $this->date_reservation_debut;
     }
 
-    public function setDateReservationDebut(\DateTime $date_reservation_debut): static
+    public function setDateReservationDebut(\DateTimeInterface $date_reservation_debut): self
     {
         $this->date_reservation_debut = $date_reservation_debut;
-
         return $this;
     }
 
-    public function getDateReservationFin(): ?\DateTime
+    public function getDateReservationFin(): ?\DateTimeInterface
     {
         return $this->date_reservation_fin;
     }
 
-    public function setDateReservationFin(\DateTime $date_reservation_fin): static
+    public function setDateReservationFin(\DateTimeInterface $date_reservation_fin): self
     {
         $this->date_reservation_fin = $date_reservation_fin;
-
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 
-    public function getTerrain(): ?terrain
+    public function getTerrain(): ?Terrain
     {
         return $this->terrain;
     }
 
-    public function setTerrain(?terrain $terrain): static
+    public function setTerrain(?Terrain $terrain): self
     {
         $this->terrain = $terrain;
-
         return $this;
     }
 }

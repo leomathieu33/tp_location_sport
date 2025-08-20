@@ -1,0 +1,44 @@
+.historique-container {
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.recherche {
+  background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.recherche strong {
+  color: #007bff;
+}
+
+.recherche small {
+  color: #555;
+}
+
+.btn-supprimer {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.btn-supprimer:hover {
+  background: #c82333;
+}
+
+.flash-success {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: 1px solid #c3e6cb;
+}

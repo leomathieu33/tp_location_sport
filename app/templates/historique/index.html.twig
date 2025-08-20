@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique des recherches{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/historique.css') }}">
+{% endblock %}
+
+{% block body %}
+  <div class="historique-container">
+    <h1>🕓 Historique des recherches</h1>
+
+    {% for message in app.flashes('success') %}
+      <div class="flash-success">{{ message }}</div>
+    {% endfor %}
+
+    {% if recherches is empty %}
+      <p>Aucune recherche enregistrée.</p>
+    {% else %}
+      <form method="post" action="{{ path('historique_supprimer') }}" onsubmit="return confirm('Supprimer tout l\'historique ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete_all') }}">
+        <button type="submit" class="btn-supprimer">🗑️ Supprimer tout l'historique</button>
+      </form>
+
+      <ul>
+        {% for r in recherches %}
+          <li class="recherche">
+            <strong>{{ r.sport }}</strong> à <strong>{{ r.ville }}</strong> le {{ r.date|date('Y-m-d') }}<br>
+            <small>Ajouté le {{ r.createdAt|date('d/m/Y H:i') }}</small>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}

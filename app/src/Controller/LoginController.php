@@ -2,36 +2,39 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route; // ou Attribute selon ta version Symfony
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends AbstractController
 {
-    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
-    public function login(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hasher): Response
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $error = null;
-
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
-            $password = $request->request->get('password');
-
-            $user = $em->getRepository(User::class)->findOneBy(['email' => $email]);
-
-            if (!$user || !$hasher->isPasswordValid($user, $password)) {
-                $error = "Email ou mot de passe incorrect.";
-            } else {
-                // Ici tu peux gérer la connexion (session, token, etc.)
-                // Pour l’instant, juste une redirection vers l’accueil
-                return $this->redirectToRoute('app_accueil');
-            }
+        // Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_accueil');
         }
 
-        return $this->render('login.html.twig', ['error' => $error]);
+        // Récupération de la dernière erreur de connexion, s'il y en a une
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // Récupération du dernier nom d'utilisateur saisi
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        // Affichage du formulaire de connexion
+        return $this->render('login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
+    }
+
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): void
+    {
+        // Cette méthode peut rester vide.
+        // Symfony interceptera automatiquement cette route pour gérer la déconnexion.
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

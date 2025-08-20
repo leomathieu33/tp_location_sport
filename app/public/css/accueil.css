@@ -3,8 +3,18 @@ body {
   margin: 0;
   padding: 0;
   background: #f4f4f4;
+  height: 100vh; /* ✅ pour le full height */
+  display: flex;         /* ✅ permet à .page-wrapper de s'étendre */
+  flex-direction: column;
 }
 
+.page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- HEADER --- */
 header {
   background-color: #0066cc;
   color: white;
@@ -12,6 +22,7 @@ header {
   text-align: center;
 }
 
+/* --- FORM --- */
 form {
   display: flex;
   justify-content: center;
@@ -32,6 +43,7 @@ button {
   cursor: pointer;
 }
 
+/* --- SECTIONS --- */
 .sports-list, .centres-proches {
   padding: 2rem;
   text-align: center;
@@ -46,11 +58,17 @@ button {
   cursor: pointer;
 }
 
+/* --- Pousser le footer en bas --- */
+.page-wrapper > *:not(.footer) {
+  flex-grow: 1;
+}
+
+/* --- FOOTER --- */
 .footer {
-  background-color: #1c1c1c ;
+  background-color: #1c1c1c;
   color: #eee;
   padding: 2rem 1rem 1rem;
-  margin-top: 3rem;
+  margin-top: auto;
 }
 
 .footer-container {
@@ -96,4 +114,52 @@ button {
   border-top: 1px solid #333;
   font-size: 0.9rem;
   color: #999;
+}
+
+/* --- ✅ BOUTON "RÉSERVER" EN ROUGE --- */
+.btn-reserver {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-reserver:hover {
+  background-color: #c62828;
+  transform: translateY(-1px);
+}
+
+/* === ACCESSIBILITÉ === */
+
+/* Classe pour cacher visuellement les labels mais garder accessibles aux lecteurs d'écran */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}
+
+/* Focus visible clair et accessible sur tous les éléments focusables */
+input:focus,
+button:focus,
+a:focus {
+  outline: 3px solid #ffbf47;
+  outline-offset: 2px;
+  box-shadow: 0 0 5px #ffbf47;
+}
+
+/* Focus spécifique pour les boutons sports */
+.sports button:focus {
+  outline: 3px solid #ffbf47;
+  outline-offset: 2px;
+  box-shadow: 0 0 5px #ffbf47;
 }

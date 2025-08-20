@@ -46,20 +46,35 @@ class ApiRechercheController extends AbstractController
             $dm->persist($recherche);
             $dm->flush();
 
-            $result = [];
-            foreach ($terrains as $terrain) {
-                $result[] = [
-                    'nom' => $terrain->getReferenceTerrain(),
-                    'ville' => $terrain->getVille(),
-                    'sport' => $terrain->getSport()->getNomSport(),
-                    'adresse' => $terrain->getAdresse(),
-                    'disponible_le' => $dateObj->format('Y-m-d'),
-                ];
-            }
+                $result = [];
+        foreach ($terrains as $terrain) {
+            $result[] = [
+                'id' => $terrain->getId(), // <-- ajoute cet id ici
+                'nom' => $terrain->getReferenceTerrain(),
+                'ville' => $terrain->getVille(),
+                'sport' => $terrain->getSport()->getNomSport(),
+                'adresse' => $terrain->getAdresse(),
+                'disponible_le' => $dateObj->format('Y-m-d'),
+            ];
+}
 
             return $this->json($result);
         } catch (\Exception $e) {
             return $this->json(['error' => 'Erreur serveur : ' . $e->getMessage()], 500);
         }
     }
-}
+            #[Route('/api/recherche/clear', name: 'api_recherche_clear', methods: ['POST'])]
+         public function clearHistorique(DocumentManager $dm): JsonResponse
+        {
+        try {
+            $dm->createQueryBuilder(\App\Document\RechercheHistorique::class)
+                ->remove()
+                ->getQuery()
+                ->execute();
+
+            return $this->json(['message' => 'Historique supprimé.']);
+        } catch (\Exception $e) {
+            return $this->json(['error' => 'Erreur : ' . $e->getMessage()], 500);
+        }
+    }
+    }

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Terrains{% endblock %}
+
+{% block body %}
+<h1>Gestion des Terrains</h1>
+
+<a href="{{ path('admin_terrains_new') }}">Ajouter un nouveau terrain</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Référence Terrain</th> {# au lieu de Nom #}
+            <th>Type de sport</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for terrain in terrains %}
+            <tr>
+                <td>{{ terrain.id }}</td>
+                <td>{{ terrain.referenceTerrain }}</td> {# correction ici #}
+                <td>{{ terrain.sport.nomSport }}</td> {# correction ici #}
+                <td>
+                    <a href="{{ path('admin_terrains_edit', {'id': terrain.id}) }}">Modifier</a>
+                    <form method="post" action="{{ path('admin_terrains_delete', {'id': terrain.id}) }}" style="display:inline-block" onsubmit="return confirm('Supprimer ce terrain ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ terrain.id) }}">
+                        <button type="submit">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4">Aucun terrain trouvé.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -11,7 +11,7 @@
                 <th>Terrain</th>
                 <th>Date de début</th>
                 <th>Date de fin</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,8 +22,8 @@
                 <td>{{ reservation.dateReservationFin|date('d/m/Y H:i') }}</td>
                 <td>
                     <form method="post" action="{{ path('app_reservation_cancel', {'id': reservation.id}) }}" onsubmit="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('cancel' ~ reservation.id) }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Annuler</button>
+                        <input type="hidden" name="_token" value="{{ csrf_token('cancel-reservation' ~ reservation.id) }}">
+                        <button class="btn btn-danger btn-sm" type="submit">Annuler</button>
                     </form>
                 </td>
             </tr>

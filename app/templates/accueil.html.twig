@@ -8,61 +8,44 @@
 {% endblock %}
 
 {% block body %}
-<header>
-  <h1>
-    <img src="{{ asset('images/logo.png') }}" alt="LOCASPORT" width="150" />
-  </h1>
+<div class="page-wrapper">
 
-  <p>Réservez Votre Terrain en Ligne</p>
+  <header>
+    <h1>
+      <img src="{{ asset('images/logo.png') }}" alt="LOCASPORT, plateforme de réservation de terrains sportifs" width="150" />
+    </h1>
 
-  <form id="searchForm">
-    <input type="text" name="sport" placeholder="Sport (ex: Tennis, Padel...)" />
-    <input type="text" name="ville" placeholder="Ville ou code postal" />
-    <input type="date" name="date" />
-    <button type="submit">Rechercher</button> 
-  </form>
-</header>
+    <p>Réservez Votre Terrain en Ligne</p>
 
-<section class="sports-list">
-  <h2>Choisissez un sport</h2>
-  <div class="sports">
-    <button>Padel</button>
-    <button>Soccer</button>
-    <button>Tennis</button>
-  </div>
-</section>
+    <form id="searchForm" aria-label="Formulaire de recherche de terrains sportifs">
+      <label for="sport" class="sr-only">Sport (ex: Tennis, Padel...)</label>
+      <input type="text" id="sport" name="sport" placeholder="Sport (ex: Tennis, Padel...)" />
 
-<section class="centres-proches">
-  <h2>	Terrains disponibles</h2>
-  <div id="results"></div> 
-</section>
+      <label for="ville" class="sr-only">Ville ou code postal</label>
+      <input type="text" id="ville" name="ville" placeholder="Ville ou code postal" />
 
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <h3>Réservation Sport</h3>
-      <p>Réservez vos terrains facilement partout en France.</p>
+      <label for="date" class="sr-only">Date de réservation</label>
+      <input type="date" id="date" name="date" />
+
+      <button type="submit">Rechercher</button> 
+    </form>
+  </header>
+
+  <section class="sports-list" aria-label="Liste des sports disponibles">
+    <h2>Choisissez un sport</h2>
+    <div class="sports" role="list">
+      <button role="listitem">Padel</button>
+      <button role="listitem">Soccer</button>
+      <button role="listitem">Tennis</button>
     </div>
+  </section>
 
-    <div class="footer-links">
-      <ul>
-        <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
-        <li><a href="{{ path('app_login') }}">Connexion</a></li>
-        <li><a href="{{ path('app_register') }}">Inscription</a></li>
-      </ul>
-    </div>
+  <section class="centres-proches" aria-live="polite" aria-atomic="true">
+    <h2>Terrains disponibles</h2>
+    <div id="results"></div>
+  </section>
 
-    <div class="footer-contact">
-      <h4>Contact</h4>
-      <p>Email : contact@reservationsport.fr</p>
-      <p>Téléphone : +33 1 23 45 67 89</p>
-    </div>
-  </div>
-
-  <div class="footer-bottom">
-    <p>&copy; 2025 Réservation Sport – Tous droits réservés</p>
-  </div>
-</footer>
+</div> 
 {% endblock %}
 
 {% block javascripts %}

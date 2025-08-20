@@ -3,79 +3,87 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
-use App\Form\ReservationForm;
-use App\Repository\ReservationRepository;
+use App\Entity\Terrain;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/reservation')]
-final class ReservationController extends AbstractController
+class ReservationController extends AbstractController
 {
-    #[Route(name: 'app_reservation_index', methods: ['GET'])]
-    public function index(ReservationRepository $reservationRepository): Response
-    {
-        return $this->render('reservation/index.html.twig', [
-            'reservations' => $reservationRepository->findAll(),
-        ]);
+   #[Route('/reservation/{terrainId<\d+>}', name: 'app_reservation', methods: ['GET', 'POST'])]
+public function reserver(int $terrainId, Request $request, EntityManagerInterface $em): Response
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+    $terrain = $em->getRepository(Terrain::class)->find($terrainId);
+    if (!$terrain) {
+        throw $this->createNotFoundException('Terrain non trouvé');
     }
 
-    #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    if ($request->isMethod('POST')) {
+        $dateDebut = new \DateTime($request->request->get('date_debut'));
+        $dateFin = new \DateTime($request->request->get('date_fin'));
+
         $reservation = new Reservation();
-        $form = $this->createForm(ReservationForm::class, $reservation);
-        $form->handleRequest($request);
+        $reservation->setUser($this->getUser());
+        $reservation->setTerrain($terrain);
+        $reservation->setDateReservationDebut($dateDebut);
+        $reservation->setDateReservationFin($dateFin);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($reservation);
-            $entityManager->flush();
+        $em->persist($reservation);
+        $em->flush();
 
-            return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('reservation/new.html.twig', [
-            'reservation' => $reservation,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_accueil');
     }
 
-    #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
-    public function show(Reservation $reservation): Response
-    {
-        return $this->render('reservation/show.html.twig', [
-            'reservation' => $reservation,
-        ]);
+    // Récupération des réservations de l'utilisateur connecté
+    $reservations = $em->getRepository(Reservation::class)->findBy([
+        'user' => $this->getUser()
+    ]);
+
+    // Passage de terrain ET reservations au template
+    return $this->render('reservation/reserver.html.twig', [
+        'terrain' => $terrain,
+        'reservations' => $reservations,
+    ]);
+}
+
+    #[Route('/mes-reservations', name: 'app_reservation_index', methods: ['GET'])]
+public function index(EntityManagerInterface $em): Response
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+    $reservations = $em->getRepository(Reservation::class)->findBy([
+        'user' => $this->getUser()
+    ]);
+
+    return $this->render('reservation/index.html.twig', [
+        'reservations' => $reservations,
+    ]);
+}
+
+   
+
+    #[Route('/reservation/{id}/cancel', name: 'app_reservation_cancel', methods: ['POST'])]
+public function cancel(int $id, EntityManagerInterface $em): Response
+{
+    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+    $reservation = $em->getRepository(Reservation::class)->find($id);
+    if (!$reservation) {
+        throw $this->createNotFoundException('Réservation non trouvée');
     }
 
-    #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ReservationForm::class, $reservation);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('reservation/edit.html.twig', [
-            'reservation' => $reservation,
-            'form' => $form,
-        ]);
+    // Vérifier que c’est bien l’utilisateur qui a réservé
+    if ($reservation->getUser() !== $this->getUser()) {
+        throw $this->createAccessDeniedException('Vous ne pouvez pas annuler cette réservation');
     }
 
-    #[Route('/{id}', name: 'app_reservation_delete', methods: ['POST'])]
-    public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($reservation);
-            $entityManager->flush();
-        }
+    $em->remove($reservation);
+    $em->flush();
 
-        return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
-    }
+    return $this->redirectToRoute('app_reservation_index');
+}
 }

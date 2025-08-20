@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la réservation #{{ reservation.id }}{% endblock %}
+
+{% block body %}
+    <section aria-labelledby="edit-title">
+        <h1 id="edit-title">Modifier la réservation #{{ reservation.id }}</h1>
+
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{{ path('admin_reservation_index') }}" class="btn btn-secondary" role="button">Retour à la liste</a>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

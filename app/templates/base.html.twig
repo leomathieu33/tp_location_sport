@@ -4,24 +4,62 @@
     <meta charset="UTF-8">
     <title>{% block title %}Réservation Sport{% endblock %}</title>
 
-    <!-- CSS principal -->
     <link rel="stylesheet" href="{{ asset('css/accueil.css') }}">
 
     {% block stylesheets %}
-    {# Tu peux ajouter ici d'autres fichiers CSS si besoin #}
     {% endblock %}
 </head>
 <body>
+  <div class="page-wrapper">
+    
+    <main class="main-content">
+      {% block body %}
+      {% endblock %}
+    </main>
 
-    {% block body %}
-    {# Contenu des pages filles ici #}
-    {% endblock %}
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-logo">
+          <h3>Réservation Sport</h3>
+          <p>Réservez vos terrains facilement partout en France.</p>
+        </div>
 
-    <!-- JS principal -->
-    <script src="{{ asset('js/accueil.js') }}"></script>
+        <div class="footer-links">
+          <ul class="footer-links-list">
+            <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
 
-    {% block javascripts %}
-    {# Tu peux ajouter ici d'autres scripts si besoin #}
-    {% endblock %}
+            {% if app.user %}
+              <li><a href="{{ path('historique_recherches') }}">Historique</a></li>
+              
+              <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+            {% else %}
+              <li><a href="{{ path('app_login') }}">Connexion</a></li>
+              <li><a href="{{ path('app_register') }}">Inscription</a></li>
+            {% endif %}
+
+            {% if is_granted('ROLE_ADMIN') %}
+              <li><a href="{{ path('admin_terrains_index') }}">Gestion Terrains</a></li>
+              <li><a href="{{ path('admin_reservation_index') }}">Gestion Réservations</a></li>
+            {% endif %}
+
+            <li><a href="{{ path('app_mentions_legales') }}">Mentions légales</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p>Email : contact@reservationsport.fr</p>
+          <p>Téléphone : +33 1 23 45 67 89</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Réservation Sport – Tous droits réservés</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ asset('js/accueil.js') }}"></script>
+  {% block javascripts %}{% endblock %}
 </body>
 </html>

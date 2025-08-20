@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail Réservation{% endblock %}
+
+{% block body %}
+<h1>Détail de la Réservation</h1>
+
+<ul>
+    <li><strong>ID :</strong> {{ reservation.id }}</li>
+    <li><strong>Début :</strong> {{ reservation.dateReservationDebut|date('Y-m-d H:i') }}</li>
+    <li><strong>Fin :</strong> {{ reservation.dateReservationFin|date('Y-m-d H:i') }}</li>
+    <li><strong>Utilisateur :</strong> {{ reservation.user.email }}</li>
+    <li><strong>Terrain :</strong> {{ reservation.terrain.nom }}</li>
+</ul>
+
+<a href="{{ path('admin_reservation_index') }}">← Retour</a>
+{% endblock %}

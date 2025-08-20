@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Terrain index{% endblock %}
+{% block title %}Liste des terrains{% endblock %}
 
 {% block body %}
-    <h1>Terrain index</h1>
+    <h1>Liste des terrains</h1>
 
     <table class="table">
         <thead>
@@ -11,29 +11,30 @@
                 <th>Id</th>
                 <th>Ville</th>
                 <th>Adresse</th>
-                <th>Reference_terrain</th>
-                <th>actions</th>
+                <th>Référence Terrain</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for terrain in terrains %}
-            <tr>
-                <td>{{ terrain.id }}</td>
-                <td>{{ terrain.ville }}</td>
-                <td>{{ terrain.adresse }}</td>
-                <td>{{ terrain.referenceTerrain }}</td>
-                <td>
-                    <a href="{{ path('app_terrain_show', {'id': terrain.id}) }}">show</a>
-                    <a href="{{ path('app_terrain_edit', {'id': terrain.id}) }}">edit</a>
-                </td>
-            </tr>
+        {% if terrains is not empty %}
+            {% for terrain in terrains %}
+                <tr>
+                    <td>{{ terrain.id }}</td>
+                    <td>{{ terrain.ville|default('N/A') }}</td>
+                    <td>{{ terrain.adresse|default('N/A') }}</td>
+                    <td>{{ terrain.referenceTerrain|default('N/A') }}</td>
+                    <td>
+                        <a href="{{ path('app_reservation', {'terrainId': terrain.id}) }}" class="btn btn-success btn-sm">Réserver</a>
+                        <a href="{{ path('app_terrain_show', {'id': terrain.id}) }}" class="btn btn-info btn-sm">Voir</a>
+                        <a href="{{ path('app_terrain_edit', {'id': terrain.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                    </td>
+                </tr>
+            {% endfor %}
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="5">Aucun terrain trouvé</td>
             </tr>
-        {% endfor %}
+        {% endif %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_terrain_new') }}">Create new</a>
 {% endblock %}
